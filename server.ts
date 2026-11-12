@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
@@ -14,6 +15,9 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const PORT = config.port;
+
+  // Cookie parsing middleware
+  app.use(cookieParser(config.sessionSecret));
 
   // Body parsing middleware
   app.use(express.json({ limit: '10mb' }));

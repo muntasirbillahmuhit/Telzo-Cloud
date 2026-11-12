@@ -1,0 +1,28 @@
+{
+  "userId": "user_test_a_1794391332110",
+  "lastSyncedAt": 1794391332118,
+  "folders": [
+    {
+      "id": "folder_64781bc8-90d8-4c8b-855d-ca37b6bbfc2b",
+      "name": "User A Secret Folder",
+      "description": "Private to A",
+      "color": "#4f7cf0",
+      "createdAt": 1794391332113,
+      "status": "active"
+    }
+  ],
+  "files": [
+    {
+      "id": "file_105c4138-cee5-48cd-9098-91591c688eb1",
+      "name": "doc_a.txt",
+      "size": 28,
+      "mimeType": "text/plain",
+      "folderId": "folder_64781bc8-90d8-4c8b-855d-ca37b6bbfc2b",
+      "tag": "Important",
+      "starred": false,
+      "createdAt": 1794391332117,
+      "isImage": false,
+      "localPath": "/app/applet/data/telzo/user_user_test_a_1794391332110/files/1794391332117_doc_a.txt"
+    }
+  ]
+}

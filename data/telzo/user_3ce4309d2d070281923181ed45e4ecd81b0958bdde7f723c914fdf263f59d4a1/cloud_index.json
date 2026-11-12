@@ -1,0 +1,15 @@
+{
+  "userId": "3ce4309d2d070281923181ed45e4ecd81b0958bdde7f723c914fdf263f59d4a1",
+  "lastSyncedAt": 1794389867191,
+  "folders": [
+    {
+      "id": "folder_0b7affd2-6562-4846-b6c9-033fb26358e1",
+      "name": "Test Documents",
+      "description": "A private Telegram channel",
+      "color": "#5a8bff",
+      "createdAt": 1794389867190,
+      "status": "active"
+    }
+  ],
+  "files": []
+}

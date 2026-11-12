@@ -1,0 +1,11 @@
+=== TELZO CLOUD PERSISTENCE TEST FILE ===
+Created At: 2026-11-11T10:07:15.496Z
+Created Locale: 11/11/2026, 10:07:15 AM
+Platform: linux (x64)
+Node.js: v22.23.2
+Hostname: localhost
+Process PID: 2747
+Working Directory: /app/applet
+Status: ACTIVE
+Description: This file verifies whether files created in the sandbox root directory persist across dev server restarts, container lifecycles, and browser refreshes.
+=========================================

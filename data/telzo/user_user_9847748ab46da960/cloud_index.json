@@ -1,0 +1,17 @@
+{
+  "userId": "user_9847748ab46da960",
+  "lastSyncedAt": 1794393495871,
+  "folders": [],
+  "files": [
+    {
+      "id": "file_44595eb0-d472-4e78-9370-4d442396b04a",
+      "name": "user_a_doc.txt",
+      "size": 80,
+      "mimeType": "text/plain",
+      "starred": false,
+      "createdAt": 1794393495870,
+      "isImage": false,
+      "localPath": "/app/applet/data/telzo/user_user_9847748ab46da960/files/1794393495870_user_a_doc.txt"
+    }
+  ]
+}

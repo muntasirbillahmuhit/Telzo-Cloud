@@ -40,9 +40,9 @@ export const Header: React.FC<HeaderProps> = ({
           aria-label="Account Settings"
           title={user.isSignedIn ? `@${user.username}` : 'Account Settings'}
         >
-          {user.isSignedIn && user.displayName ? (
+          {user.isSignedIn && (user.displayName || user.username) ? (
             <span style={{ fontSize: 13, fontWeight: 800 }}>
-              {user.displayName.slice(0, 2).toUpperCase()}
+              {(user.displayName || user.username).slice(0, 2).toUpperCase()}
             </span>
           ) : (
             <User size={18} />

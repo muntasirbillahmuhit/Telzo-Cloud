@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Star, Image as ImageIcon, SlidersHorizontal } from 'lucide-react';
+import { Home, Folder, Image as ImageIcon, SlidersHorizontal } from 'lucide-react';
 import { PlaneIcon } from './PlaneIcon';
 import { ViewTab } from '../types';
 
@@ -27,12 +27,12 @@ export const Navigation: React.FC<NavigationProps> = ({
         </button>
 
         <button
-          className={currentTab === 'starred' ? 'on' : ''}
-          onClick={() => onSelectTab('starred')}
-          aria-label="Starred tab"
+          className={currentTab === 'files' || currentTab === 'starred' ? 'on' : ''}
+          onClick={() => onSelectTab('files')}
+          aria-label="Files tab"
         >
-          <Star size={22} />
-          <span>Starred</span>
+          <Folder size={22} />
+          <span>Files</span>
         </button>
 
         <button

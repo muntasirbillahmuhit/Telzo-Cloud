@@ -1,0 +1,23 @@
+{
+  "userId": "user_172bcecb34ff1325",
+  "lastSyncedAt": 1794393437774,
+  "folders": [
+    {
+      "id": "folder_4945ca85-19e9-4c99-8d30-de92cdaed314",
+      "name": "Verification_Folder_1794393437725",
+      "description": "Test folder",
+      "color": "#3b82f6",
+      "createdAt": 1794393437773,
+      "status": "active"
+    },
+    {
+      "id": "folder_4945ca85-19e9-4c99-8d30-de92cdaed314",
+      "name": "Verification_Folder_1794393437725",
+      "description": "Test folder",
+      "color": "#3b82f6",
+      "createdAt": 1794393437773,
+      "status": "active"
+    }
+  ],
+  "files": []
+}

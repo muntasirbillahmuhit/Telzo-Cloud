@@ -1,0 +1,30 @@
+{
+  "userId": "user_test_a_1794391302900",
+  "lastSyncedAt": 1794391302906,
+  "folders": [
+    {
+      "id": "folder_09655a5f-17da-45da-8732-9c4ba4a011ff",
+      "name": "User A Secret Folder",
+      "description": "Private to A",
+      "color": "#4f7cf0",
+      "telegramChannelId": null,
+      "createdAt": 1794391302902,
+      "status": "active"
+    }
+  ],
+  "files": [
+    {
+      "id": "file_a256f435-2b1f-4c40-adb7-29e3d6f583a0",
+      "name": "doc_a.txt",
+      "size": 28,
+      "mimeType": "text/plain",
+      "folderId": "folder_09655a5f-17da-45da-8732-9c4ba4a011ff",
+      "telegramChannelId": null,
+      "tag": "Important",
+      "starred": false,
+      "createdAt": 1794391302905,
+      "isImage": false,
+      "localPath": "/app/applet/data/telzo/user_user_test_a_1794391302900/files/1794391302905_doc_a.txt"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "userId": "user_c5854bf013d677e5",
+  "lastSyncedAt": 1794393573926,
+  "folders": [
+    {
+      "id": "folder_e880baaf-c887-44c0-9cf9-5d95364c85c3",
+      "name": "Test_Folder_1794393573866",
+      "description": "E2E Test Folder",
+      "color": "#3b82f6",
+      "createdAt": 1794393573896,
+      "status": "active"
+    }
+  ],
+  "files": []
+}

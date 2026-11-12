@@ -1,0 +1,17 @@
+{
+  "userId": "user_2f75ff8211a0b42c",
+  "lastSyncedAt": 1794393479161,
+  "folders": [],
+  "files": [
+    {
+      "id": "file_c1b7289d-ace8-4af7-a77a-9735f2e3a189",
+      "name": "e2e_test_doc.txt",
+      "size": 80,
+      "mimeType": "text/plain",
+      "starred": false,
+      "createdAt": 1794393479160,
+      "isImage": false,
+      "localPath": "/app/applet/data/telzo/user_user_2f75ff8211a0b42c/files/1794393479160_e2e_test_doc.txt"
+    }
+  ]
+}

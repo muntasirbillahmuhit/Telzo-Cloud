@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PlaneIcon } from './PlaneIcon';
 import {
   Monitor,
@@ -10,8 +10,32 @@ import {
   HelpCircle,
   ChevronRight,
   LogOut,
+  HardDrive,
+  CheckCircle2,
+  AlertTriangle,
+  FileText,
+  RefreshCw,
+  X,
+  Copy,
+  Check,
+  Lock,
+  Shield,
+  Key,
 } from 'lucide-react';
 import { TelegramUser, ThemeMode, TagName, TAG_COLORS, CloudFile } from '../types';
+
+interface PersistenceResult {
+  exists: boolean;
+  filename: string;
+  path: string;
+  sizeBytes?: number;
+  createdAt?: string;
+  modifiedAt?: string;
+  content?: string;
+  checkedAt: string;
+  serverUptimeSeconds?: number;
+  message: string;
+}
 
 interface SettingsViewProps {
   user: TelegramUser;
@@ -27,6 +51,11 @@ interface SettingsViewProps {
   onOpenHelpModal: () => void;
   onSelectTag: (tag: TagName) => void;
   activeTag: TagName | null;
+  autoLockEnabled: boolean;
+  onToggleAutoLock: () => void;
+  passcode: string;
+  onChangePasscode: (newPasscode: string) => void;
+  onLockNow: () => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
@@ -43,10 +72,72 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onOpenHelpModal,
   onSelectTag,
   activeTag,
+  autoLockEnabled,
+  onToggleAutoLock,
+  passcode,
+  onChangePasscode,
+  onLockNow,
 }) => {
+  const [isChangingPasscode, setIsChangingPasscode] = useState(false);
+  const [currentInput, setCurrentInput] = useState('');
+  const [newInput, setNewInput] = useState('');
+  const [passcodeError, setPasscodeError] = useState<string | null>(null);
+  const [passcodeSuccess, setPasscodeSuccess] = useState<string | null>(null);
+
+  const [checkingPersistence, setCheckingPersistence] = useState(false);
+  const [creatingPersistenceFile, setCreatingPersistenceFile] = useState(false);
+  const [persistenceResult, setPersistenceResult] = useState<PersistenceResult | null>(null);
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [copiedContent, setCopiedContent] = useState(false);
+
   const tags: TagName[] = ['Work', 'Personal', 'Design', 'Important'];
 
   const getTagCount = (t: TagName) => files.filter((f) => f.tag === t).length;
+
+  const handleCheckPersistence = async () => {
+    setCheckingPersistence(true);
+    try {
+      const res = await fetch('/api/test-persistence');
+      const data: PersistenceResult = await res.json();
+      setPersistenceResult(data);
+      setShowAlertModal(true);
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      setPersistenceResult({
+        exists: false,
+        filename: 'test-persistence.txt',
+        path: '/app/applet/test-persistence.txt',
+        checkedAt: new Date().toISOString(),
+        message: `Failed to connect to backend: ${errMsg}`,
+      });
+      setShowAlertModal(true);
+    } finally {
+      setCheckingPersistence(false);
+    }
+  };
+
+  const handleCreatePersistenceFile = async () => {
+    setCreatingPersistenceFile(true);
+    try {
+      const res = await fetch('/api/test-persistence', { method: 'POST' });
+      const data = await res.json();
+      if (data.exists || data.success) {
+        await handleCheckPersistence();
+      }
+    } catch (err) {
+      console.error('Failed to create persistence test file:', err);
+    } finally {
+      setCreatingPersistenceFile(false);
+    }
+  };
+
+  const handleCopyContent = () => {
+    if (persistenceResult?.content) {
+      navigator.clipboard.writeText(persistenceResult.content);
+      setCopiedContent(true);
+      setTimeout(() => setCopiedContent(false), 2000);
+    }
+  };
 
   return (
     <main className="view show" id="more">
@@ -209,7 +300,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
       </section>
 
-      <section className="card empty" style={{ opacity: 0, pointerEvents: 'none' }} />
     </main>
   );
 };

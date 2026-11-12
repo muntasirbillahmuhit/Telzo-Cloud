@@ -1,9 +1,9 @@
 import { config } from '../config/index.js';
-import { UserSession } from '../middleware/session.js';
+import { UserSession, TelegramSessionState } from '../middleware/session.js';
 
 export interface TelegramAuthResponse {
   success: boolean;
-  state: 'unconfigured' | 'ready_for_tdlib' | 'awaiting_code' | 'authenticated';
+  state: TelegramSessionState;
   message: string;
   phoneCodeHash?: string;
   user?: {

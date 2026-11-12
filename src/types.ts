@@ -1,6 +1,6 @@
 export type TagName = 'Work' | 'Personal' | 'Design' | 'Important';
 
-export type ViewTab = 'home' | 'starred' | 'photos' | 'more';
+export type ViewTab = 'home' | 'files' | 'starred' | 'photos' | 'more';
 
 export type ThemeMode = 'system' | 'light' | 'dark';
 
@@ -15,7 +15,9 @@ export interface CloudFile {
   tag?: TagName;
   createdAt: number;
   isImage: boolean;
+  telegramChannelId?: string;
   telegramMessageId?: number;
+  localPath?: string;
 }
 
 export interface CloudFolder {
@@ -24,6 +26,7 @@ export interface CloudFolder {
   description?: string;
   color?: string;
   isTelegramGroup?: boolean;
+  telegramChannelId?: string; // Dedicated private Telegram channel ID
   createdAt: number;
 }
 
@@ -36,6 +39,9 @@ export interface TelegramUser {
   avatarUrl?: string;
   syncEnabled: boolean;
   cloudStorageType: 'browser' | 'telegram';
+  oidcVerified?: boolean;
+  tdlibVerified?: boolean;
+  indexChannelId?: string;
 }
 
 export const TAG_COLORS: Record<TagName, string> = {

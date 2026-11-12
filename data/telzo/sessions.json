@@ -1,0 +1,240 @@
+{
+  "bd24e66428436bcd18aebf36c295a1199f9158fcfe2e9978a845f807077b9546": {
+    "sessionId": "bd24e66428436bcd18aebf36c295a1199f9158fcfe2e9978a845f807077b9546",
+    "createdAt": 1794389859939,
+    "lastActive": 1794389859939,
+    "telegramState": "unconfigured",
+    "userId": "user_a5d70a9e9135a2f7"
+  },
+  "e598e96de014f861becad3088a73b93cc944fd32996e533700a54738342d0cc4": {
+    "sessionId": "e598e96de014f861becad3088a73b93cc944fd32996e533700a54738342d0cc4",
+    "createdAt": 1794389859961,
+    "lastActive": 1794389859961,
+    "telegramState": "unconfigured",
+    "userId": "user_00c036d178492d20"
+  },
+  "7d61e1d2b4309f5441c65996c3b9b988797490fcb0f7ab16a9f93f12a9cfaf4d": {
+    "sessionId": "7d61e1d2b4309f5441c65996c3b9b988797490fcb0f7ab16a9f93f12a9cfaf4d",
+    "createdAt": 1794389863438,
+    "lastActive": 1794389863438,
+    "telegramState": "unconfigured",
+    "userId": "user_68c43eabca0508ed"
+  },
+  "3ce4309d2d070281923181ed45e4ecd81b0958bdde7f723c914fdf263f59d4a1": {
+    "sessionId": "3ce4309d2d070281923181ed45e4ecd81b0958bdde7f723c914fdf263f59d4a1",
+    "createdAt": 1794389867189,
+    "lastActive": 1794389867189,
+    "telegramState": "unconfigured",
+    "userId": "user_d298a16459c5f321"
+  },
+  "738869d6780bdaf066f92b41f07f15a9110e3f19a72f93a983a4b06fdcf0de58": {
+    "sessionId": "738869d6780bdaf066f92b41f07f15a9110e3f19a72f93a983a4b06fdcf0de58",
+    "createdAt": 1794389883201,
+    "lastActive": 1794389883201,
+    "telegramState": "unconfigured",
+    "userId": "user_bbea3d3bcc38a4f1"
+  },
+  "c911983b7695b51abbd45b64939479f9b8e27aefa57bb0867a193f3cec5dc781": {
+    "sessionId": "c911983b7695b51abbd45b64939479f9b8e27aefa57bb0867a193f3cec5dc781",
+    "createdAt": 1794389887503,
+    "lastActive": 1794389887503,
+    "telegramState": "unconfigured",
+    "userId": "user_4fc6adad06a2bc81"
+  },
+  "953a55fb2262994f2a55ed1636d1330d71de2384d03466a6de2475651c0ce4ae": {
+    "sessionId": "953a55fb2262994f2a55ed1636d1330d71de2384d03466a6de2475651c0ce4ae",
+    "createdAt": 1794389887527,
+    "lastActive": 1794389887527,
+    "telegramState": "unconfigured",
+    "userId": "user_e09c17ad5bc07a15"
+  },
+  "d8ff22175f53f7a40313794820bc645d1d67a4f357b428e05e47e6eccaf3abc2": {
+    "sessionId": "d8ff22175f53f7a40313794820bc645d1d67a4f357b428e05e47e6eccaf3abc2",
+    "createdAt": 1794389920498,
+    "lastActive": 1794389966357,
+    "telegramState": "unconfigured",
+    "userId": "user_281294eb9464d658"
+  },
+  "223b5d4cd153a7aa5c036b64fee59e6d847a129973cb25d42c23810cbccbf7dc": {
+    "sessionId": "223b5d4cd153a7aa5c036b64fee59e6d847a129973cb25d42c23810cbccbf7dc",
+    "createdAt": 1794389980585,
+    "lastActive": 1794389980585,
+    "telegramState": "unconfigured",
+    "userId": "user_1f4c2739a1573297"
+  },
+  "c3a1668b68928cbed8b43b9ba68165b9a6e2456bfc6efb449a7dc9d92e336e36": {
+    "sessionId": "c3a1668b68928cbed8b43b9ba68165b9a6e2456bfc6efb449a7dc9d92e336e36",
+    "userId": "user_e244795e95591c1a",
+    "createdAt": 1794393264754,
+    "lastActive": 1794393264754,
+    "telegramState": "unconfigured"
+  },
+  "adb9fc868c7acd7bb23a900d12f2fb6bc2618b8499625174397518484432924d": {
+    "sessionId": "adb9fc868c7acd7bb23a900d12f2fb6bc2618b8499625174397518484432924d",
+    "userId": "user_a5ca22f38ede2cc0",
+    "createdAt": 1794393269014,
+    "lastActive": 1794393269014,
+    "telegramState": "unconfigured"
+  },
+  "9a63cb27bd793c3878b53ea6bf1a0ad3812175b83a93435fc91c6c1a2c04b258": {
+    "sessionId": "9a63cb27bd793c3878b53ea6bf1a0ad3812175b83a93435fc91c6c1a2c04b258",
+    "userId": "user_45e3fd984ab2636c",
+    "createdAt": 1794393269040,
+    "lastActive": 1794393269040,
+    "telegramState": "unconfigured"
+  },
+  "a7e89539686a2aea1d38c2eb977f74bacf66c4aecb2600433384078d1853936a": {
+    "sessionId": "a7e89539686a2aea1d38c2eb977f74bacf66c4aecb2600433384078d1853936a",
+    "userId": "user_2b650d00b11bc3b3",
+    "createdAt": 1794393269066,
+    "lastActive": 1794393269066,
+    "telegramState": "unconfigured"
+  },
+  "03997b6ef78a6604ad899372a41a537e8680998f46763c4dee7d984cc393d0d9": {
+    "sessionId": "03997b6ef78a6604ad899372a41a537e8680998f46763c4dee7d984cc393d0d9",
+    "userId": "user_d707f34dcef7c25c",
+    "createdAt": 1794393269094,
+    "lastActive": 1794393269094,
+    "telegramState": "unconfigured"
+  },
+  "720e7b7d212c1ba8d84987eca1ae44efb59d34854a6496aa8ce719bf77a9ad4b": {
+    "sessionId": "720e7b7d212c1ba8d84987eca1ae44efb59d34854a6496aa8ce719bf77a9ad4b",
+    "userId": "user_cdc40f58d0866db7",
+    "createdAt": 1794393269142,
+    "lastActive": 1794393269142,
+    "telegramState": "unconfigured"
+  },
+  "eea953301dd76daadffdf97bd40bd2dba4e7a51724aed8f104586e3bca5234ba": {
+    "sessionId": "eea953301dd76daadffdf97bd40bd2dba4e7a51724aed8f104586e3bca5234ba",
+    "userId": "user_abe2950fc227b34f",
+    "createdAt": 1794393436776,
+    "lastActive": 1794393436776,
+    "telegramState": "unconfigured"
+  },
+  "fab60126c2b13291208c5b03b949772f488c89fd01315e82a3d493cf3420ca35": {
+    "sessionId": "fab60126c2b13291208c5b03b949772f488c89fd01315e82a3d493cf3420ca35",
+    "userId": "user_172bcecb34ff1325",
+    "createdAt": 1794393437767,
+    "lastActive": 1794393437767,
+    "telegramState": "unconfigured"
+  },
+  "8f75253b43a6cdb520ce13a29e11143e81a880a16fd6a6270c81cf73b936c8f9": {
+    "sessionId": "8f75253b43a6cdb520ce13a29e11143e81a880a16fd6a6270c81cf73b936c8f9",
+    "userId": "user_2f75ff8211a0b42c",
+    "createdAt": 1794393479147,
+    "lastActive": 1794393479147,
+    "telegramState": "unconfigured"
+  },
+  "673dd4efb56a5c681bab694dac6ee0438bb97635dc9a0df36332d4803225bfa3": {
+    "sessionId": "673dd4efb56a5c681bab694dac6ee0438bb97635dc9a0df36332d4803225bfa3",
+    "userId": "user_a8b52ff1eccb4833",
+    "createdAt": 1794393479172,
+    "lastActive": 1794393479172,
+    "telegramState": "unconfigured"
+  },
+  "7d7c31415f45cdf96c4828e6eec6f26b75dac598c11e89109701eefb897c52ca": {
+    "sessionId": "7d7c31415f45cdf96c4828e6eec6f26b75dac598c11e89109701eefb897c52ca",
+    "userId": "user_c3f1e034624c0880",
+    "createdAt": 1794393479182,
+    "lastActive": 1794393479182,
+    "telegramState": "unconfigured"
+  },
+  "041dcb3cae286c30b16bcbdf87bdd028f3ef6865e8c090497e544789fc0f9161": {
+    "sessionId": "041dcb3cae286c30b16bcbdf87bdd028f3ef6865e8c090497e544789fc0f9161",
+    "userId": "user_f8e4595d71c9b4fe",
+    "createdAt": 1794393479191,
+    "lastActive": 1794393479191,
+    "telegramState": "unconfigured"
+  },
+  "b62c97e27b66d5ccc6b7d57aa546293dbd1986d86aa2eb34605ce62c1d72c518": {
+    "sessionId": "b62c97e27b66d5ccc6b7d57aa546293dbd1986d86aa2eb34605ce62c1d72c518",
+    "userId": "user_c8432c38aa1cdc85",
+    "createdAt": 1794393479201,
+    "lastActive": 1794393479201,
+    "telegramState": "unconfigured"
+  },
+  "dc6a8407a066cb947300b6c9b70e4631038c516b0db749e396b8a8b64be8cb29": {
+    "sessionId": "dc6a8407a066cb947300b6c9b70e4631038c516b0db749e396b8a8b64be8cb29",
+    "userId": "user_9847748ab46da960",
+    "createdAt": 1794393495861,
+    "lastActive": 1794393495861,
+    "telegramState": "unconfigured"
+  },
+  "91fec4a11b157d38e7b5d1380874524c52e1957439b0ce1525ab5f40ace6cba0": {
+    "sessionId": "91fec4a11b157d38e7b5d1380874524c52e1957439b0ce1525ab5f40ace6cba0",
+    "userId": "user_ef8e1b624159b01a",
+    "createdAt": 1794393495881,
+    "lastActive": 1794393495881,
+    "telegramState": "unconfigured"
+  },
+  "9b96c64581112e5e5ba167286145221650c10a9686b77b36ddad3dc54277bd64": {
+    "sessionId": "9b96c64581112e5e5ba167286145221650c10a9686b77b36ddad3dc54277bd64",
+    "userId": "user_1aae18ac69862cea",
+    "createdAt": 1794393495895,
+    "lastActive": 1794393495895,
+    "telegramState": "unconfigured"
+  },
+  "d50fda708d75147eb52c388c9107f316912be807b49bf06b31b26c5d7f92ff57": {
+    "sessionId": "d50fda708d75147eb52c388c9107f316912be807b49bf06b31b26c5d7f92ff57",
+    "userId": "user_6a14195c26354ce3",
+    "createdAt": 1794393495905,
+    "lastActive": 1794393495905,
+    "telegramState": "unconfigured"
+  },
+  "f3d24b450f3faf1d6872bcd74a1decc822455dceb7064a0a829e6b73d54ca770": {
+    "sessionId": "f3d24b450f3faf1d6872bcd74a1decc822455dceb7064a0a829e6b73d54ca770",
+    "userId": "user_4986487c62132895",
+    "createdAt": 1794393495916,
+    "lastActive": 1794393495916,
+    "telegramState": "unconfigured"
+  },
+  "563f81a3f51fb53a85839d22c8bb5b3f675b4a1cddd83c05380556dbeb6f9009": {
+    "sessionId": "563f81a3f51fb53a85839d22c8bb5b3f675b4a1cddd83c05380556dbeb6f9009",
+    "userId": "user_a9f4f7435c72c394",
+    "createdAt": 1794393515099,
+    "lastActive": 1794393515099,
+    "telegramState": "unconfigured"
+  },
+  "079d846f41525e91d8bae18bbbff9369ae5a6494d9cf57f575ec3032fe79f5c3": {
+    "sessionId": "079d846f41525e91d8bae18bbbff9369ae5a6494d9cf57f575ec3032fe79f5c3",
+    "userId": "user_6bf8a9162dcf3387",
+    "createdAt": 1794393516176,
+    "lastActive": 1794393516176,
+    "telegramState": "unconfigured"
+  },
+  "session_user_a_1794393543829": {
+    "sessionId": "session_user_a_1794393543829",
+    "userId": "user_7b985c740048de98",
+    "createdAt": 1794393543855,
+    "lastActive": 1794393543925,
+    "telegramState": "unconfigured"
+  },
+  "session_user_b_1794393543829": {
+    "sessionId": "session_user_b_1794393543829",
+    "userId": "user_9be3f9d647d2b27c",
+    "createdAt": 1794393543915,
+    "lastActive": 1794393543922,
+    "telegramState": "unconfigured"
+  },
+  "test_user_a_1794393573866": {
+    "sessionId": "test_user_a_1794393573866",
+    "userId": "user_c5854bf013d677e5",
+    "createdAt": 1794393573887,
+    "lastActive": 1794393573929,
+    "telegramState": "unconfigured"
+  },
+  "test_user_b_1794393573866": {
+    "sessionId": "test_user_b_1794393573866",
+    "userId": "user_e7ed5dae206f9175",
+    "createdAt": 1794393573933,
+    "lastActive": 1794393573940,
+    "telegramState": "unconfigured"
+  },
+  "fresh_empty_account_1794393573942": {
+    "sessionId": "fresh_empty_account_1794393573942",
+    "userId": "user_213d4ebe3fc6ec82",
+    "createdAt": 1794393573944,
+    "lastActive": 1794393573944,
+    "telegramState": "unconfigured"
+  }
+}

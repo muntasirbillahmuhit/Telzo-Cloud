@@ -302,9 +302,25 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   <Folder size={20} />
                 </div>
                 <b>{folder.name}</b>
-                <span>
-                  {folderFilesCount} {folderFilesCount === 1 ? 'file' : 'files'}
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                  <span>
+                    {folderFilesCount} {folderFilesCount === 1 ? 'file' : 'files'}
+                  </span>
+                  {(folder.telegramChannelId || folder.isTelegramGroup) && (
+                    <span
+                      style={{
+                        fontSize: 10,
+                        color: 'var(--blue)',
+                        background: 'rgba(90, 139, 255, 0.1)',
+                        padding: '2px 6px',
+                        borderRadius: 9999,
+                        fontWeight: 700,
+                      }}
+                    >
+                      TG Channel
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })}

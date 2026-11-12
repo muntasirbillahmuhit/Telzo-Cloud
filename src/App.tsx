@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Navigation } from './components/Navigation';
 import { HomeView } from './components/HomeView';
-import { StarredView } from './components/StarredView';
+import { FilesView } from './components/FilesView';
 import { PhotosView } from './components/PhotosView';
 import { SettingsView } from './components/SettingsView';
 import {
@@ -14,6 +14,8 @@ import {
   HelpModal,
   SharedModal,
 } from './components/Modals';
+import { LockScreen } from './components/LockScreen';
+import { TelegramLoginScreen } from './components/TelegramLoginScreen';
 import { CloudFile, CloudFolder, TagName, TelegramUser, ThemeMode, ViewTab } from './types';
 
 const DEFAULT_USER: TelegramUser = {
@@ -80,8 +82,16 @@ export default function App() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed && parsed.isSignedIn && parsed.username && parsed.username !== 'muntasir') {
-          return parsed;
+        if (parsed && parsed.isSignedIn && parsed.username) {
+          return {
+            isSignedIn: true,
+            username: parsed.username,
+            displayName: parsed.displayName || parsed.username,
+            syncEnabled: parsed.syncEnabled ?? true,
+            cloudStorageType: 'telegram',
+            phone: parsed.phone,
+            telegramId: parsed.telegramId,
+          };
         }
       } catch (e) {
         console.error(e);
@@ -103,6 +113,99 @@ export default function App() {
   const [isRecentModalOpen, setIsRecentModalOpen] = useState(false);
   const [isSharedModalOpen, setIsSharedModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+
+  // Auto-lock state & settings (1 minute inactivity protection)
+  const [isLocked, setIsLocked] = useState(false);
+  const [passcode, setPasscode] = useState<string>(() => {
+    return localStorage.getItem('telzo_passcode') || '1234';
+  });
+  const [autoLockEnabled, setAutoLockEnabled] = useState<boolean>(() => {
+    return localStorage.getItem('telzo_autolock_enabled') !== 'false';
+  });
+
+  const handleToggleAutoLock = () => {
+    setAutoLockEnabled((prev) => {
+      const next = !prev;
+      localStorage.setItem('telzo_autolock_enabled', String(next));
+      return next;
+    });
+  };
+
+  const handleChangePasscode = (newCode: string) => {
+    setPasscode(newCode);
+    localStorage.setItem('telzo_passcode', newCode);
+  };
+
+  const handleResetPasscode = () => {
+    setPasscode('1234');
+    localStorage.setItem('telzo_passcode', '1234');
+  };
+
+  const handleLockNow = () => {
+    setIsLocked(true);
+  };
+
+  // Auto-lock inactivity detection (1 minute = 60,000ms)
+  useEffect(() => {
+    if (!autoLockEnabled) return;
+
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const INACTIVITY_LIMIT_MS = 60 * 1000; // 1 minute
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsLocked(true);
+      }, INACTIVITY_LIMIT_MS);
+    };
+
+    const activityEvents = [
+      'mousemove',
+      'mousedown',
+      'keydown',
+      'touchstart',
+      'touchmove',
+      'scroll',
+      'click',
+    ];
+
+    const handleUserActivity = () => {
+      if (!isLocked) {
+        resetTimer();
+      }
+    };
+
+    // Initialize inactivity countdown
+    resetTimer();
+
+    activityEvents.forEach((evt) => {
+      window.addEventListener(evt, handleUserActivity, { passive: true });
+    });
+
+    // Check inactivity when returning from background or another browser tab
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        localStorage.setItem('telzo_bg_time', String(Date.now()));
+      } else {
+        const bgTime = Number(localStorage.getItem('telzo_bg_time') || 0);
+        if (bgTime && Date.now() - bgTime >= INACTIVITY_LIMIT_MS) {
+          setIsLocked(true);
+        } else if (!isLocked) {
+          resetTimer();
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearTimeout(timeoutId);
+      activityEvents.forEach((evt) => {
+        window.removeEventListener(evt, handleUserActivity);
+      });
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [autoLockEnabled, isLocked]);
 
   // Sync theme
   useEffect(() => {
@@ -205,60 +308,184 @@ export default function App() {
     }
   };
 
-  const handleAddPhotos = (fileList: FileList) => {
-    const newPhotos: CloudFile[] = [];
-    Array.from(fileList).forEach((file, index) => {
-      if (file.type.startsWith('image/')) {
-        const url = URL.createObjectURL(file);
-        newPhotos.push({
-          id: `up_${Date.now()}_${index}`,
-          name: file.name,
-          size: file.size,
-          mimeType: file.type,
-          url,
-          starred: false,
-          tag: 'Personal',
-          createdAt: Date.now(),
-          isImage: true,
+  const loadBackendData = async () => {
+    try {
+      const [foldersRes, filesRes, oidcRes, tdlibRes] = await Promise.all([
+        fetch('/api/folders').catch(() => null),
+        fetch('/api/files').catch(() => null),
+        fetch('/api/auth/telegram/status').catch(() => null),
+        fetch('/api/telegram/status').catch(() => null),
+      ]);
+
+      if (foldersRes && foldersRes.ok) {
+        const fData = await foldersRes.json().catch(() => null);
+        const list = fData?.folders || fData?.data;
+        if (Array.isArray(list)) {
+          setFolders(list);
+        }
+      }
+
+      if (filesRes && filesRes.ok) {
+        const fileData = await filesRes.json().catch(() => null);
+        const list = fileData?.files || fileData?.data;
+        if (Array.isArray(list)) {
+          setFiles(list);
+        }
+      }
+
+      let isAuth = false;
+      let uName = user.username;
+      let dName = user.displayName;
+      let tgId = user.telegramId;
+      let idxId = user.indexChannelId;
+      let oidcOk = false;
+      let tdlibOk = false;
+
+      if (oidcRes && oidcRes.ok) {
+        const oData = await oidcRes.json().catch(() => null);
+        if (oData?.authenticated && oData?.identity) {
+          isAuth = true;
+          oidcOk = true;
+          if (oData.identity.username) uName = oData.identity.username;
+          if (oData.identity.name) dName = oData.identity.name;
+          if (oData.identity.sub) tgId = oData.identity.sub;
+        }
+      }
+
+      if (tdlibRes && tdlibRes.ok) {
+        const tData = await tdlibRes.json().catch(() => null);
+        if (tData?.tdlibReady && tData?.user) {
+          isAuth = true;
+          tdlibOk = true;
+          if (tData.user.username) uName = tData.user.username;
+          const full = `${tData.user.firstName || ''} ${tData.user.lastName || ''}`.trim();
+          if (full) dName = full;
+          if (tData.user.id) tgId = String(tData.user.id);
+          if (tData.indexChannelId) idxId = tData.indexChannelId;
+        }
+      }
+
+      if (isAuth) {
+        setUser({
+          isSignedIn: true,
+          username: uName || 'telegram_user',
+          displayName: dName || uName || 'Telegram User',
+          telegramId: tgId,
+          syncEnabled: true,
+          cloudStorageType: 'telegram',
+          oidcVerified: oidcOk,
+          tdlibVerified: tdlibOk,
+          indexChannelId: idxId,
         });
       }
-    });
-
-    if (newPhotos.length > 0) {
-      setFiles((prev) => [...newPhotos, ...prev]);
+    } catch (e) {
+      console.warn('[TELZO] Backend sync warning:', e);
     }
   };
 
-  const handleUploadFiles = (fileList: FileList, folderId?: string, tag?: TagName) => {
-    const newUploads: CloudFile[] = [];
-    Array.from(fileList).forEach((file, index) => {
+  const [isLoginRoute, setIsLoginRoute] = useState(() => {
+    return window.location.pathname === '/login' || window.location.hash === '#/login';
+  });
+
+  // Sync with backend on startup & check OIDC redirect params & route
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsLoginRoute(window.location.pathname === '/login' || window.location.hash === '#/login');
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    const params = new URLSearchParams(window.location.search);
+    const oidcSuccess = params.get('oidc_success');
+    const oidcError = params.get('oidc_error');
+
+    if (oidcSuccess || oidcError) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      if (oidcSuccess) {
+        setIsLoginRoute(true);
+      }
+    }
+
+    if (window.location.pathname === '/login') {
+      setIsLoginRoute(true);
+    }
+
+    loadBackendData();
+
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const handleAddPhotos = async (fileList: FileList) => {
+    handleUploadFiles(fileList, undefined, 'Personal');
+  };
+
+  const handleUploadFiles = async (fileList: FileList | File[], folderId?: string, tag?: TagName) => {
+    const filesArray = Array.from(fileList);
+    for (const file of filesArray) {
       const isImg = file.type.startsWith('image/');
-      const url = URL.createObjectURL(file);
-      newUploads.push({
-        id: `up_${Date.now()}_${index}`,
-        name: file.name,
-        size: file.size,
-        mimeType: file.type || 'application/octet-stream',
-        url,
-        folderId,
-        starred: false,
-        tag: tag || 'Work',
-        createdAt: Date.now(),
-        isImage: isImg,
-      });
-    });
+      const formData = new FormData();
+      formData.append('files', file);
+      if (folderId) formData.append('folderId', folderId);
+      if (tag) formData.append('tag', tag);
 
-    if (newUploads.length > 0) {
-      setFiles((prev) => [...newUploads, ...prev]);
+      try {
+        const res = await fetch('/api/files/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.file) {
+            setFiles((prev) => [data.file, ...prev]);
+            continue;
+          }
+        }
+      } catch (e) {
+        console.warn('[TELZO] Upload error, falling back locally:', e);
+      }
+
+      // Local fallback
+      const url = URL.createObjectURL(file);
+      setFiles((prev) => [
+        {
+          id: `up_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+          name: file.name,
+          size: file.size,
+          mimeType: file.type || 'application/octet-stream',
+          url,
+          folderId,
+          starred: false,
+          tag: tag || 'Work',
+          createdAt: Date.now(),
+          isImage: isImg,
+        },
+        ...prev,
+      ]);
     }
   };
 
-  const handleCreateFolder = (
+  const handleCreateFolder = async (
     name: string,
     description: string,
     color: string,
     isTelegramGroup: boolean
   ) => {
+    try {
+      const res = await fetch('/api/folders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, description, color, isTelegramGroup }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.folder) {
+          setFolders((prev) => [data.folder, ...prev]);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('[TELZO] Folder create backend error, fallback locally:', e);
+    }
+
     const newFolder: CloudFolder = {
       id: `folder_${Date.now()}`,
       name,
@@ -270,24 +497,48 @@ export default function App() {
     setFolders((prev) => [newFolder, ...prev]);
   };
 
-  const handleSignIn = (username: string, displayName: string) => {
-    setUser({
+  const handleSignIn = async (username: string, displayName: string): Promise<TelegramUser> => {
+    const sanitizedUsername = username.replace(/^https?:\/\/t\.me\//, '').replace(/^@+/, '').trim();
+    const sanitizedDisplayName = displayName.trim() || sanitizedUsername;
+
+    if (!sanitizedUsername) {
+      throw new Error('Telegram username cannot be empty.');
+    }
+
+    const updatedUser: TelegramUser = {
       isSignedIn: true,
-      username,
-      displayName,
+      username: sanitizedUsername,
+      displayName: sanitizedDisplayName,
       syncEnabled: true,
       cloudStorageType: 'telegram',
-    });
+    };
+
+    setUser(updatedUser);
+    return updatedUser;
   };
 
-  const handleSignOut = () => {
-    setUser({
-      isSignedIn: false,
-      username: '',
-      displayName: '',
-      syncEnabled: false,
-      cloudStorageType: 'browser',
-    });
+  const handleSignOut = async () => {
+    const sessionId = localStorage.getItem('telzo_session_id');
+    if (sessionId) {
+      try {
+        await fetch('/api/telegram/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-session-id': sessionId,
+          },
+        });
+      } catch (e) {
+        console.warn('Backend logout warning:', e);
+      }
+    }
+    setUser(DEFAULT_USER);
+    try {
+      localStorage.removeItem('telzo_user');
+      localStorage.removeItem('telzo_session_id');
+    } catch (e) {
+      console.warn('LocalStorage error:', e);
+    }
   };
 
   const handleSelectTag = (t: TagName) => {
@@ -302,13 +553,15 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header
-        theme={theme}
-        isDarkEffective={isDarkEffective}
-        onToggleTheme={handleToggleTheme}
-        onOpenAccount={() => setTab('more')}
-        user={user}
-      />
+      {tab !== 'files' && tab !== 'starred' && tab !== 'more' && (
+        <Header
+          theme={theme}
+          isDarkEffective={isDarkEffective}
+          onToggleTheme={handleToggleTheme}
+          onOpenAccount={() => setTab('more')}
+          user={user}
+        />
+      )}
 
       {activeTag && (
         <div
@@ -356,11 +609,13 @@ export default function App() {
         />
       )}
 
-      {tab === 'starred' && (
-        <StarredView
-          files={displayedFiles}
+      {(tab === 'files' || tab === 'starred') && (
+        <FilesView
+          files={files}
+          folders={folders}
           onToggleStar={handleToggleStar}
           onOpenFilePreview={setPreviewFile}
+          onOpenUpload={() => setIsUploadOpen(true)}
         />
       )}
 
@@ -378,7 +633,10 @@ export default function App() {
           user={user}
           theme={theme}
           onSetTheme={setTheme}
-          onOpenTelegramModal={() => setIsTelegramModalOpen(true)}
+          onOpenTelegramModal={() => {
+            window.history.pushState({}, '', '/login');
+            setIsLoginRoute(true);
+          }}
           onSignOut={handleSignOut}
           files={files}
           trashFiles={trashFiles}
@@ -391,6 +649,23 @@ export default function App() {
           onOpenHelpModal={() => setIsHelpModalOpen(true)}
           onSelectTag={handleSelectTag}
           activeTag={activeTag}
+          autoLockEnabled={autoLockEnabled}
+          onToggleAutoLock={handleToggleAutoLock}
+          passcode={passcode}
+          onChangePasscode={handleChangePasscode}
+          onLockNow={handleLockNow}
+        />
+      )}
+
+      {isLoginRoute && (
+        <TelegramLoginScreen
+          onBack={() => {
+            window.history.pushState({}, '', window.location.pathname === '/login' ? '/' : window.location.pathname);
+            setIsLoginRoute(false);
+            loadBackendData();
+          }}
+          onSignIn={handleSignIn}
+          onRefreshData={loadBackendData}
         />
       )}
 
@@ -429,6 +704,7 @@ export default function App() {
         user={user}
         onSignIn={handleSignIn}
         onSignOut={handleSignOut}
+        onRefreshData={loadBackendData}
       />
 
       <TrashModal
@@ -447,6 +723,14 @@ export default function App() {
       <SharedModal
         isOpen={isSharedModalOpen}
         onClose={() => setIsSharedModalOpen(false)}
+      />
+
+      {/* Security Auto-Lock Passcode Screen */}
+      <LockScreen
+        isLocked={isLocked}
+        onUnlock={() => setIsLocked(false)}
+        correctPasscode={passcode}
+        onResetPasscode={handleResetPasscode}
       />
     </div>
   );
